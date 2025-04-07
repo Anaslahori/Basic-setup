@@ -1,0 +1,6 @@
+npm i express
+npm install --save sequelize
+npm install --save pg pg-hstore
+npm install --save-dev sequelize-cli
+Create a database folder and run this command for generate database related files and folders 
+npx sequelize-cli init
