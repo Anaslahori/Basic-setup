@@ -1,5 +1,5 @@
 import MainLayout from "../layout/MainLayout";
-import AuthGuard from "../utils/route-guard/AuthGuard";
+// import AuthGuard from "../utils/route-guard/AuthGuard";
 
 
 const MainRoutes = {
@@ -8,14 +8,14 @@ const MainRoutes = {
     {
       path: "/",
       element: (
-        <AuthGuard>
+        // <AuthGuard>
           <MainLayout />
-        </AuthGuard>
+        // </AuthGuard>
       ),
       children: [
         {
           path: "sample-page",
-          element: <>Sample page</>,
+          element: <MainLayout />,
         },
       ],
     },

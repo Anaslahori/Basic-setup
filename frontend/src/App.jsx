@@ -1,5 +1,4 @@
 import { BrowserRouter } from "react-router-dom";
-import "./App.css";
 import Routes from "./routes";
 
 function App() {
@@ -7,6 +6,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes />
+        <h1>kaif</h1>
       </BrowserRouter>
     </>
   );
