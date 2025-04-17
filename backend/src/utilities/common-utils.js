@@ -37,9 +37,9 @@ const handleResponse = (...args) => {
         // Log only if error is not intentionally thrown
         if (!(error instanceof BaseError)) {
             if (error.statusCode >= 500) {
-                logger.error(error);
+                console.error(error);
             } else {
-                logger.warn(error.message);
+                console.warn(error.message);
             }
         }
         return res.error(error);

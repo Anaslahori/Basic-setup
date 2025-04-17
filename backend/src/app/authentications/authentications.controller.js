@@ -35,12 +35,10 @@ const login = async (req, res) => {
         whereCondition = {
             mobileNumber: username
         };
-    } 
-    // else {
-    //     throwError(statusCodes.BAD_REQUEST, statusMessages.INVALID_DETAILS);
-    // }
+    } else {
+        throwError(statusCodes.BAD_REQUEST, statusMessages.INVALID_DETAILS);
+    }
     const isExists = await userService.getUserByCondition(whereCondition);
-    console.log('whereCondition :', whereCondition);
     throwIfNot(isExists, statusCodes.NOT_FOUND, statusMessages.USER_NOT_EXIST);
 
     const inputPassword = authService.encryptPassword(password, isExists.userSalt);
