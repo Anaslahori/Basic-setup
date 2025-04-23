@@ -28,6 +28,10 @@ module.exports = {
                     field: "mobile_number",
                     allowNull: false
                 },
+                role: {
+                    type: Sequelize.STRING,
+                    field: "role"
+                },
                 address: {
                     type: Sequelize.STRING,
                     field: "address",

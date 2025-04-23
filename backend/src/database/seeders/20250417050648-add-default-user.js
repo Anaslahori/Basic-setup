@@ -12,8 +12,9 @@ module.exports = {
                         email: "admin@admin.com",
                         mobile_number: "1234567890",
                         address: "123 Admin St, Admin City, Admin State, 12345",
-                        password: "45ca907d70fa30c231e929e3f57a8c9a1f896a7abb30d06cd7132b72d9301a23ba567853e5e3a178232d7fe47b8657007f41498dc206ae0b32a4fa11f2852f73",
+                        password: "8196f4ce85794ca7c54124867d0820c2d40ff20ac7ac9471dbcc3cc445c8ad7842568ce32a078e7b79bc8109641bbc002d99caebbf23d3e14dc87d75261f0505",
                         user_salt: "09bd5d51a05f6ce1",
+                        role: 'Super User',
                         created_at: new Date(),
                         updated_at: new Date()
                     }
