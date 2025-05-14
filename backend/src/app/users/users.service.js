@@ -7,6 +7,7 @@ const userAlreadyExists = async (where) => {
     try {
         const users = new Users();
         const data = await users.isAlreadyExists(where);
+        console.log('data :', data);
         return data;
     } catch (error) {
         throwError(statusCodes.INTERNAL_ERROR, statusMessages.FETCH_USER_FAILURE, error);
