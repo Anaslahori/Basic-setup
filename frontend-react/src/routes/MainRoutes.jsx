@@ -1,3 +1,4 @@
+import Users from "pages/users";
 import MainLayout from "../layout/MainLayout";
 import AuthGuard from "../utils/route-guard/AuthGuard";
 
@@ -16,6 +17,10 @@ const MainRoutes = {
         {
           path: "sample-page",
           element: <>Sample page</>,
+        },
+        {
+          path: "users",
+          element: <Users />,
         },
       ],
     },
