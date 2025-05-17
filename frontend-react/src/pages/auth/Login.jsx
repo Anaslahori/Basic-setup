@@ -60,7 +60,7 @@ const Login = () => {
     });
     if (response.success) {
       console.log(response.data?.data);
-      navigate("/sample-page");
+      navigate("/users");
       // emailPasswordSignIn(response.data.user);
     } else {
       // toast(response.error.message, { variant: 'error' });

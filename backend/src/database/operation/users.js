@@ -23,14 +23,14 @@ class Users extends Base {
         this.relations = [
             {
                 model: this.db[USERS],
-                attributes: ["id", "name", "code"],
+                attributes: ["id", "name"],
                 foreignKey: "created_by",
                 as: "created"
 
             },
             {
                 model: this.db[USERS],
-                attributes: ["id", "name", "code"],
+                attributes: ["id", "name"],
                 foreignKey: "updated_by",
                 as: "updated"
             }

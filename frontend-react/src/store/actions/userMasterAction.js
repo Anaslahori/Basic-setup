@@ -21,20 +21,11 @@ export const getUsers = createAsyncThunk('getUsers', async (object, { rejectWith
     hasAccess = 'false',
     self
   } = object || {};
-  const response = await request('/user-list', {
-    method: 'GET',
-    query: {
-      roleId,
-      supervision,
-      listType,
-      lockType,
-      hasAccess,
-      self,
-      ...(organisationBranchId ? { organisationBranchId: organisationBranchId } : { organizationId: organizationId }),
-      ...(!all && { sort: [sortBy, sortOrder], pageIndex, pageSize, filterObject, searchString, accessors, projectId: [projectId] })
-    }
+  const response = await request('/users-list', {
+    method: 'GET'
   });
   if (response.success) {
+  console.log('response :', response);
     return response.data;
   }
   const error = response.error && response.error.message ? response.error.message : response.error;

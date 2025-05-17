@@ -11,7 +11,12 @@ import usePagination from "hooks/usePagination";
 
 const Users = () => {
   const users = useSelector((state) => state.users);
-  const { refreshPagination } = usePagination();
+  const {
+    paginations: { pageSize, pageIndex, forceUpdate },
+    refreshPagination,
+    setPageIndex,
+    setPageSize,
+  } = usePagination();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -27,9 +32,9 @@ const Users = () => {
 
   const { data, count } = useMemo(
     () => ({
-      data: users.usersObject?.rows || [],
-      count: users.usersObject?.count || 0,
-      isLoading: users.loading || false,
+      data: users?.usersObject?.rows || [],
+      count: users?.usersObject?.count || 0,
+      isLoading: users?.loading || false,
     }),
     [users]
   );
@@ -122,6 +127,10 @@ const Users = () => {
           handleRowUpdate={handleRowUpdate}
           handleRowView={handleRowView}
           showLockIcon={true}
+          setPageIndex={setPageIndex}
+          setPageSize={setPageSize}
+          pageIndex={pageIndex}
+          pageSize={pageSize}
           // disableDeleteIcon={true}
         />
       )}

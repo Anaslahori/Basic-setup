@@ -5,13 +5,8 @@ const { throwError } = require("../../services/throw-error-class");
 const crypto = require("node:crypto");
 // const { TokenService } = require("../../services/token.service");
 const userService = require("../users/users.service");
-const jwt = require("jsonwebtoken");
+const { TokenService } = require("../../services/token.service");
 
-const salt = "YeRGWrInLQenFfexhPapd3IoS5JNjpzs&EIO";
-
-const issueToken = (payload, additionDetails = {}) => {
-    return jwt.sign(payload, salt, additionDetails);
-}
 
 // later on these two function moved to the encryption.service.js file
 const encryptPassword = (password, usersalt = "") => {
@@ -41,7 +36,7 @@ const issueJwt = function (userData = {}) {
             email: userData.email,
             time: (new Date()).getTime()
         };
-        return issueToken(tokenizeObj);
+        return TokenService.issueToken(tokenizeObj);
     } catch (error) {
         throwError(statusCodes.INTERNAL_ERROR, statusMessages.TOKEN_NOT_FOUND);
     }

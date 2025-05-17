@@ -45,7 +45,7 @@ import request from './request';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
-import { useFilterContext } from 'contexts/FilterContext';
+// import { useFilterContext } from 'contexts/FilterContext';
 
 export function GlobalFilter({ searchOnClick, isApiSearch, count, preGlobalFilteredRows, globalFilter, setGlobalFilter, ...other }) {
   const rowCount = count ? count : preGlobalFilteredRows.length;
@@ -431,406 +431,406 @@ APISort.propTypes = {
 };
 
 const blankOption = [{ name: '(Blanks)', id: '(Blanks)' }];
-export const MultiSelectDropdown = memo(
-  ({
-    // common
-    column,
+// export const MultiSelectDropdown = memo(
+//   ({
+//     // common
+//     column,
 
-    // filter related props
-    filterProps,
+//     // filter related props
+//     filterProps,
 
-    // sort related props
-    shouldUseApiSort,
-    handleChangeSort,
-    enableOfflineSort,
-    sort,
-    currentAccessor,
+//     // sort related props
+//     shouldUseApiSort,
+//     handleChangeSort,
+//     enableOfflineSort,
+//     sort,
+//     currentAccessor,
 
-    // misc
-    listType
-  }) => {
-    const { currentFilter: currentFilterFromContext, handleSetCurrentFilter } = useFilterContext();
+//     // misc
+//     listType
+//   }) => {
+//     // const { currentFilter: currentFilterFromContext, handleSetCurrentFilter } = useFilterContext();
 
-    const {
-      formId,
-      apiRouteForFetchOptions,
-      tableName,
-      getColumn,
-      customAccessor: columnOfDb,
-      projectId,
-      levelId,
-      masterId,
-      tableColumnName,
-      filterObjectForApi,
-      method,
-      gaaLevelFilter
-    } = filterProps || {};
+//     const {
+//       formId,
+//       apiRouteForFetchOptions,
+//       tableName,
+//       getColumn,
+//       customAccessor: columnOfDb,
+//       projectId,
+//       levelId,
+//       masterId,
+//       tableColumnName,
+//       filterObjectForApi,
+//       method,
+//       gaaLevelFilter
+//     } = filterProps || {};
 
-    const isFcMode = !!formId;
-    const shouldUseBlankOption = isFcMode;
-    const isCurrentColumnSorted = sort?.[2] === currentAccessor;
+//     const isFcMode = !!formId;
+//     const shouldUseBlankOption = isFcMode;
+//     const isCurrentColumnSorted = sort?.[2] === currentAccessor;
 
-    const isFilteringImplemented = !!tableName;
+//     const isFilteringImplemented = !!tableName;
 
-    const { id: columnId, Header } = column;
-    const columnIdPicker = columnOfDb || columnId;
-    const currentFilter = useMemo(() => currentFilterFromContext?.[columnIdPicker] || [], [columnIdPicker, currentFilterFromContext]);
-    const pageSize = 20;
+//     const { id: columnId, Header } = column;
+//     const columnIdPicker = columnOfDb || columnId;
+//     // const currentFilter = useMemo(() => currentFilterFromContext?.[columnIdPicker] || [], [columnIdPicker, currentFilterFromContext]);
+//     const pageSize = 20;
 
-    const [open, setOpen] = useState(false);
-    const [options, setOptions] = useState([]);
-    const [totalOptions, setTotalOptions] = useState(0);
-    const [temporaryValues, setTemporaryValues] = useState([]);
-    const [searchString, setSearchString] = useState('');
+//     const [open, setOpen] = useState(false);
+//     const [options, setOptions] = useState([]);
+//     const [totalOptions, setTotalOptions] = useState(0);
+//     const [temporaryValues, setTemporaryValues] = useState([]);
+//     const [searchString, setSearchString] = useState('');
 
-    const [pageNumber, setPageNumber] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
+//     const [pageNumber, setPageNumber] = useState(1);
+//     const [isLoading, setIsLoading] = useState(false);
 
-    const theme = useTheme();
-    const searchStringRef = useRef();
+//     const theme = useTheme();
+//     const searchStringRef = useRef();
 
-    const currentSelectedOptions = !open ? currentFilter : temporaryValues;
+//     const currentSelectedOptions = !open ? currentFilter : temporaryValues;
 
-    const optionsWithBlankOption = useMemo(
-      () => [...(shouldUseBlankOption ? blankOption : []), ...options],
-      [shouldUseBlankOption, options]
-    );
+//     const optionsWithBlankOption = useMemo(
+//       () => [...(shouldUseBlankOption ? blankOption : []), ...options],
+//       [shouldUseBlankOption, options]
+//     );
 
-    const tooltipTitle = useMemo(
-      () =>
-        !open
-          ? currentFilter.length
-            ? `${currentFilter.length} filter${currentFilter.length > 1 ? 's' : ''} applied`
-            : `Filter ${Header}`
-          : '',
-      [open, currentFilter.length, Header]
-    );
+//     const tooltipTitle = useMemo(
+//       () =>
+//         !open
+//           ? currentFilter.length
+//             ? `${currentFilter.length} filter${currentFilter.length > 1 ? 's' : ''} applied`
+//             : `Filter ${Header}`
+//           : '',
+//       [open, currentFilter.length, Header]
+//     );
 
-    const fetchOptions = useCallback(
-      async (pn, ps) => {
-        if (!isFilteringImplemented) return [];
+//     const fetchOptions = useCallback(
+//       async (pn, ps) => {
+//         if (!isFilteringImplemented) return [];
 
-        const optionsResp = await request(apiRouteForFetchOptions || '/distinct-dropdowns-list', {
-          method: method || 'GET',
-          timeoutOverride: 3 * 60000,
-          [method === 'post' ? 'body' : 'query']: {
-            ...(isFcMode && { formId }),
-            pageSize: ps,
-            isActive: listType,
-            pageIndex: pn,
-            ...(searchString && { searchString }),
-            ...(isFcMode ? { columnName: tableName } : { tableName }),
-            ...(projectId && { projectId }),
-            ...(levelId && { levelId }),
-            ...(masterId && { masterId }),
-            ...(tableColumnName && { tableColumnName }),
-            getColumn,
-            filterObjectForApi,
-            customAccessor: columnOfDb,
-            gaaLevelFilter
-          }
-        });
+//         const optionsResp = await request(apiRouteForFetchOptions || '/distinct-dropdowns-list', {
+//           method: method || 'GET',
+//           timeoutOverride: 3 * 60000,
+//           [method === 'post' ? 'body' : 'query']: {
+//             ...(isFcMode && { formId }),
+//             pageSize: ps,
+//             isActive: listType,
+//             pageIndex: pn,
+//             ...(searchString && { searchString }),
+//             ...(isFcMode ? { columnName: tableName } : { tableName }),
+//             ...(projectId && { projectId }),
+//             ...(levelId && { levelId }),
+//             ...(masterId && { masterId }),
+//             ...(tableColumnName && { tableColumnName }),
+//             getColumn,
+//             filterObjectForApi,
+//             customAccessor: columnOfDb,
+//             gaaLevelFilter
+//           }
+//         });
 
-        if (optionsResp?.data?.data) {
-          setTotalOptions(optionsResp?.data?.data?.count ? parseInt(optionsResp.data.data.count) : 0);
-          return optionsResp.data.data?.rows;
-        } else {
-          return [];
-        }
-      },
-      [
-        filterObjectForApi,
-        method,
-        isFilteringImplemented,
-        apiRouteForFetchOptions,
-        isFcMode,
-        formId,
-        listType,
-        searchString,
-        tableName,
-        projectId,
-        levelId,
-        masterId,
-        tableColumnName,
-        getColumn,
-        columnOfDb,
-        gaaLevelFilter
-      ]
-    );
+//         if (optionsResp?.data?.data) {
+//           setTotalOptions(optionsResp?.data?.data?.count ? parseInt(optionsResp.data.data.count) : 0);
+//           return optionsResp.data.data?.rows;
+//         } else {
+//           return [];
+//         }
+//       },
+//       [
+//         filterObjectForApi,
+//         method,
+//         isFilteringImplemented,
+//         apiRouteForFetchOptions,
+//         isFcMode,
+//         formId,
+//         listType,
+//         searchString,
+//         tableName,
+//         projectId,
+//         levelId,
+//         masterId,
+//         tableColumnName,
+//         getColumn,
+//         columnOfDb,
+//         gaaLevelFilter
+//       ]
+//     );
 
-    const handleOpen = useCallback(() => {
-      setTemporaryValues(currentFilter);
-      setOpen(true);
-    }, [currentFilter]);
+//     const handleOpen = useCallback(() => {
+//       setTemporaryValues(currentFilter);
+//       setOpen(true);
+//     }, [currentFilter]);
 
-    const handleClose = useCallback(() => {
-      setTemporaryValues([]);
-      setSearchString('');
-      setOpen(false);
-    }, []);
+//     const handleClose = useCallback(() => {
+//       setTemporaryValues([]);
+//       setSearchString('');
+//       setOpen(false);
+//     }, []);
 
-    const handleFilter = useCallback(() => {
-      handleSetCurrentFilter(temporaryValues, columnIdPicker);
-      setOpen(false);
-    }, [columnIdPicker, handleSetCurrentFilter, temporaryValues]);
+//     const handleFilter = useCallback(() => {
+//       handleSetCurrentFilter(temporaryValues, columnIdPicker);
+//       setOpen(false);
+//     }, [columnIdPicker, handleSetCurrentFilter, temporaryValues]);
 
-    const handleSetTemporaryValues = useCallback(
-      (opt) => {
-        const exists = temporaryValues.some((value) => value.name === opt.name);
+//     const handleSetTemporaryValues = useCallback(
+//       (opt) => {
+//         const exists = temporaryValues.some((value) => value.name === opt.name);
 
-        if (exists) {
-          setTemporaryValues((prev) => prev.filter((option) => option.name !== opt.name));
-        } else {
-          setTemporaryValues((prev) => prev.concat(opt));
-        }
-      },
-      [temporaryValues]
-    );
+//         if (exists) {
+//           setTemporaryValues((prev) => prev.filter((option) => option.name !== opt.name));
+//         } else {
+//           setTemporaryValues((prev) => prev.concat(opt));
+//         }
+//       },
+//       [temporaryValues]
+//     );
 
-    const clearFilter = useCallback(() => {
-      handleSetCurrentFilter([], columnIdPicker);
-      setTemporaryValues([]);
-    }, [columnIdPicker, handleSetCurrentFilter]);
+//     const clearFilter = useCallback(() => {
+//       handleSetCurrentFilter([], columnIdPicker);
+//       setTemporaryValues([]);
+//     }, [columnIdPicker, handleSetCurrentFilter]);
 
-    const loadData = useCallback(
-      async (pageNum, size, newItemsOnly = false) => {
-        setIsLoading(true);
-        const response = await fetchOptions(pageNum, size);
-        const newItems = response.map((item) => ({
-          ...item,
-          id: item.name
-        }));
-        setOptions((prevItems) => (newItemsOnly ? newItems : [...prevItems, ...newItems]));
-        setIsLoading(false);
-      },
-      [fetchOptions]
-    );
+//     const loadData = useCallback(
+//       async (pageNum, size, newItemsOnly = false) => {
+//         setIsLoading(true);
+//         const response = await fetchOptions(pageNum, size);
+//         const newItems = response.map((item) => ({
+//           ...item,
+//           id: item.name
+//         }));
+//         setOptions((prevItems) => (newItemsOnly ? newItems : [...prevItems, ...newItems]));
+//         setIsLoading(false);
+//       },
+//       [fetchOptions]
+//     );
 
-    const handleItemsRendered = useCallback(
-      ({ visibleStopIndex }) => {
-        if (searchStringRef.current !== searchString) {
-          searchStringRef.current = searchString;
-          return;
-        }
+//     const handleItemsRendered = useCallback(
+//       ({ visibleStopIndex }) => {
+//         if (searchStringRef.current !== searchString) {
+//           searchStringRef.current = searchString;
+//           return;
+//         }
 
-        if (!isLoading && options.length < totalOptions && visibleStopIndex >= options.length - (shouldUseBlankOption ? 5 : 6)) {
-          setPageNumber((prevPage) => prevPage + 1);
-          loadData(pageNumber + 1, pageSize);
-        }
-      },
-      [searchString, isLoading, options.length, totalOptions, shouldUseBlankOption, loadData, pageNumber]
-    );
+//         if (!isLoading && options.length < totalOptions && visibleStopIndex >= options.length - (shouldUseBlankOption ? 5 : 6)) {
+//           setPageNumber((prevPage) => prevPage + 1);
+//           loadData(pageNumber + 1, pageSize);
+//         }
+//       },
+//       [searchString, isLoading, options.length, totalOptions, shouldUseBlankOption, loadData, pageNumber]
+//     );
 
-    const loadDataInit = useAsyncDebounce(() => {
-      setPageNumber(1);
-      setTotalOptions(0);
-      loadData(1, pageSize, true);
-    }, 700);
+//     const loadDataInit = useAsyncDebounce(() => {
+//       setPageNumber(1);
+//       setTotalOptions(0);
+//       loadData(1, pageSize, true);
+//     }, 700);
 
-    useEffect(() => {
-      if (open) {
-        loadDataInit();
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open, searchString]);
+//     useEffect(() => {
+//       if (open) {
+//         loadDataInit();
+//       }
+//       // eslint-disable-next-line react-hooks/exhaustive-deps
+//     }, [open, searchString]);
 
-    return (
-      <FormControl>
-        <Tooltip title={tooltipTitle}>
-          <Box
-            sx={{
-              fontSize: '1rem',
-              cursor: 'pointer'
-            }}
-            onClick={handleOpen}
-          >
-            <FilterTwoTone
-              twoToneColor={isCurrentColumnSorted || currentFilter?.length ? theme.palette.error.main : theme.palette.primary.main}
-            />
-          </Box>
-        </Tooltip>
-        <StyledMenu
-          multiple
-          open={open}
-          onOpen={handleOpen}
-          onClose={handleClose}
-          value={currentSelectedOptions}
-          renderValue={() => ''}
-          onKeyDown={(e) => e.stopPropagation()}
-          onClick={(e) => e.stopPropagation()}
-          input={<Input inputComponent="div" />}
-        >
-          <Box style={{ ...(isFilteringImplemented && { height: 450 }), display: 'flex', flexDirection: 'column' }}>
-            {!column.disableSortBy && (shouldUseApiSort || enableOfflineSort) && (
-              <StickyMenuItem
-                onKeyDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                <APISort
-                  shouldUseApiSort={shouldUseApiSort}
-                  handleChangeSort={handleChangeSort}
-                  column={column}
-                  sort={sort}
-                  currentAccessor={currentAccessor}
-                  theme={theme}
-                />
-              </StickyMenuItem>
-            )}
+//     return (
+//       <FormControl>
+//         <Tooltip title={tooltipTitle}>
+//           <Box
+//             sx={{
+//               fontSize: '1rem',
+//               cursor: 'pointer'
+//             }}
+//             onClick={handleOpen}
+//           >
+//             <FilterTwoTone
+//               twoToneColor={isCurrentColumnSorted || currentFilter?.length ? theme.palette.error.main : theme.palette.primary.main}
+//             />
+//           </Box>
+//         </Tooltip>
+//         <StyledMenu
+//           multiple
+//           open={open}
+//           onOpen={handleOpen}
+//           onClose={handleClose}
+//           value={currentSelectedOptions}
+//           renderValue={() => ''}
+//           onKeyDown={(e) => e.stopPropagation()}
+//           onClick={(e) => e.stopPropagation()}
+//           input={<Input inputComponent="div" />}
+//         >
+//           <Box style={{ ...(isFilteringImplemented && { height: 450 }), display: 'flex', flexDirection: 'column' }}>
+//             {!column.disableSortBy && (shouldUseApiSort || enableOfflineSort) && (
+//               <StickyMenuItem
+//                 onKeyDown={(e) => e.stopPropagation()}
+//                 onClick={(e) => {
+//                   e.preventDefault();
+//                   e.stopPropagation();
+//                 }}
+//               >
+//                 <APISort
+//                   shouldUseApiSort={shouldUseApiSort}
+//                   handleChangeSort={handleChangeSort}
+//                   column={column}
+//                   sort={sort}
+//                   currentAccessor={currentAccessor}
+//                   theme={theme}
+//                 />
+//               </StickyMenuItem>
+//             )}
 
-            {isFilteringImplemented && (
-              <>
-                <Box
-                  onKeyDown={(e) => e.stopPropagation()}
-                  onClick={(e) => e.stopPropagation()}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    top: 0,
-                    position: 'sticky',
-                    backgroundColor: theme.palette.background.paper,
-                    zIndex: 9,
-                    padding: '8px'
-                  }}
-                >
-                  <Tooltip title={!isFilteringImplemented ? 'Filtering is unavilable for this column.' : ''}>
-                    <OutlinedInput
-                      fullWidth
-                      value={searchString || ''}
-                      onChange={(e) => setSearchString(e.target.value)}
-                      onKeyDown={(e) => {
-                        e.stopPropagation();
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      placeholder="Search..."
-                      disabled={!isFilteringImplemented}
-                      style={{
-                        ...(!isFilteringImplemented && { background: '#f0f0f0' })
-                      }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <SearchIcon
-                            style={{
-                              fontSize: '18px',
-                              color: theme.palette.secondary.dark,
-                              cursor: 'auto'
-                            }}
-                          />
-                        </InputAdornment>
-                      }
-                    />
-                  </Tooltip>
-                </Box>
-                {currentSelectedOptions.length > 0 && (
-                  <Box
-                    sx={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 150px), 1fr))',
-                      gap: '8px',
-                      padding: '8px',
-                      position: 'sticky',
-                      top: 60,
-                      backgroundColor: theme.palette.background.paper,
-                      zIndex: 8,
-                      overflowX: 'auto',
-                      maxHeight: 'calc(2 * 38px + 2 * 8px)'
-                    }}
-                  >
-                    {currentSelectedOptions.map((option) => {
-                      return (
-                        <Chip
-                          key={option.id}
-                          label={option.name + (option.code ? `-${option.code}` : '')}
-                          onDelete={() => {
-                            handleSetTemporaryValues(option);
-                          }}
-                          variant="outlined"
-                        />
-                      );
-                    })}
-                  </Box>
-                )}
+//             {isFilteringImplemented && (
+//               <>
+//                 <Box
+//                   onKeyDown={(e) => e.stopPropagation()}
+//                   onClick={(e) => e.stopPropagation()}
+//                   sx={{
+//                     display: 'flex',
+//                     alignItems: 'center',
+//                     top: 0,
+//                     position: 'sticky',
+//                     backgroundColor: theme.palette.background.paper,
+//                     zIndex: 9,
+//                     padding: '8px'
+//                   }}
+//                 >
+//                   <Tooltip title={!isFilteringImplemented ? 'Filtering is unavilable for this column.' : ''}>
+//                     <OutlinedInput
+//                       fullWidth
+//                       value={searchString || ''}
+//                       onChange={(e) => setSearchString(e.target.value)}
+//                       onKeyDown={(e) => {
+//                         e.stopPropagation();
+//                       }}
+//                       onClick={(e) => e.stopPropagation()}
+//                       placeholder="Search..."
+//                       disabled={!isFilteringImplemented}
+//                       style={{
+//                         ...(!isFilteringImplemented && { background: '#f0f0f0' })
+//                       }}
+//                       endAdornment={
+//                         <InputAdornment position="end">
+//                           <SearchIcon
+//                             style={{
+//                               fontSize: '18px',
+//                               color: theme.palette.secondary.dark,
+//                               cursor: 'auto'
+//                             }}
+//                           />
+//                         </InputAdornment>
+//                       }
+//                     />
+//                   </Tooltip>
+//                 </Box>
+//                 {currentSelectedOptions.length > 0 && (
+//                   <Box
+//                     sx={{
+//                       display: 'grid',
+//                       gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 150px), 1fr))',
+//                       gap: '8px',
+//                       padding: '8px',
+//                       position: 'sticky',
+//                       top: 60,
+//                       backgroundColor: theme.palette.background.paper,
+//                       zIndex: 8,
+//                       overflowX: 'auto',
+//                       maxHeight: 'calc(2 * 38px + 2 * 8px)'
+//                     }}
+//                   >
+//                     {currentSelectedOptions.map((option) => {
+//                       return (
+//                         <Chip
+//                           key={option.id}
+//                           label={option.name + (option.code ? `-${option.code}` : '')}
+//                           onDelete={() => {
+//                             handleSetTemporaryValues(option);
+//                           }}
+//                           variant="outlined"
+//                         />
+//                       );
+//                     })}
+//                   </Box>
+//                 )}
 
-                <StickyMenuItem
-                  onKeyDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                >
-                  <Button
-                    fullWidth
-                    disabled={!options?.length && !temporaryValues?.length}
-                    variant="outlined"
-                    color="primary"
-                    onClick={handleFilter}
-                    startIcon={<FilterListIcon />}
-                  >
-                    {!options?.length && !temporaryValues?.length ? 'No Options Available' : 'Apply Filter'}
-                  </Button>
-                  <Button
-                    fullWidth
-                    disabled={!currentSelectedOptions?.length}
-                    color="secondary"
-                    sx={{ color: theme.palette.secondary.main }}
-                    variant="outlined"
-                    onClick={clearFilter}
-                    startIcon={<FilterAltOffOutlinedIcon />}
-                  >
-                    Clear Filter
-                  </Button>
-                </StickyMenuItem>
+//                 <StickyMenuItem
+//                   onKeyDown={(e) => e.stopPropagation()}
+//                   onClick={(e) => {
+//                     e.preventDefault();
+//                     e.stopPropagation();
+//                   }}
+//                 >
+//                   <Button
+//                     fullWidth
+//                     disabled={!options?.length && !temporaryValues?.length}
+//                     variant="outlined"
+//                     color="primary"
+//                     onClick={handleFilter}
+//                     startIcon={<FilterListIcon />}
+//                   >
+//                     {!options?.length && !temporaryValues?.length ? 'No Options Available' : 'Apply Filter'}
+//                   </Button>
+//                   <Button
+//                     fullWidth
+//                     disabled={!currentSelectedOptions?.length}
+//                     color="secondary"
+//                     sx={{ color: theme.palette.secondary.main }}
+//                     variant="outlined"
+//                     onClick={clearFilter}
+//                     startIcon={<FilterAltOffOutlinedIcon />}
+//                   >
+//                     Clear Filter
+//                   </Button>
+//                 </StickyMenuItem>
 
-                <Box style={{ flex: 1, display: 'flex' }}>
-                  <AutoSizer>
-                    {({ height }) => (
-                      <List
-                        height={height}
-                        itemCount={optionsWithBlankOption.length}
-                        itemSize={46}
-                        width={400}
-                        onItemsRendered={handleItemsRendered}
-                      >
-                        {({ index, style }) => {
-                          const option = optionsWithBlankOption[index];
-                          return (
-                            <MenuItem
-                              key={option.id}
-                              style={style}
-                              sx={{ width: 400 }}
-                              onKeyDown={(e) => e.stopPropagation()}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleSetTemporaryValues(option);
-                              }}
-                            >
-                              <Checkbox checked={temporaryValues.some((val) => val.id === option.id)} />
-                              <ListItemText primary={option.name + (option.code ? `-${option.code}` : '')} />
-                            </MenuItem>
-                          );
-                        }}
-                      </List>
-                    )}
-                  </AutoSizer>
-                </Box>
-              </>
-            )}
-          </Box>
-        </StyledMenu>
-      </FormControl>
-    );
-  }
-);
+//                 <Box style={{ flex: 1, display: 'flex' }}>
+//                   <AutoSizer>
+//                     {({ height }) => (
+//                       <List
+//                         height={height}
+//                         itemCount={optionsWithBlankOption.length}
+//                         itemSize={46}
+//                         width={400}
+//                         onItemsRendered={handleItemsRendered}
+//                       >
+//                         {({ index, style }) => {
+//                           const option = optionsWithBlankOption[index];
+//                           return (
+//                             <MenuItem
+//                               key={option.id}
+//                               style={style}
+//                               sx={{ width: 400 }}
+//                               onKeyDown={(e) => e.stopPropagation()}
+//                               onClick={(e) => {
+//                                 e.stopPropagation();
+//                                 handleSetTemporaryValues(option);
+//                               }}
+//                             >
+//                               <Checkbox checked={temporaryValues.some((val) => val.id === option.id)} />
+//                               <ListItemText primary={option.name + (option.code ? `-${option.code}` : '')} />
+//                             </MenuItem>
+//                           );
+//                         }}
+//                       </List>
+//                     )}
+//                   </AutoSizer>
+//                 </Box>
+//               </>
+//             )}
+//           </Box>
+//         </StyledMenu>
+//       </FormControl>
+//     );
+//   }
+// );
 
-MultiSelectDropdown.propTypes = {
-  shouldUseApiSort: PropTypes.bool,
-  handleChangeSort: PropTypes.func,
-  enableOfflineSort: PropTypes.bool,
-  sort: PropTypes.array,
-  currentAccessor: PropTypes.string,
-  column: PropTypes.object,
-  listType: PropTypes.number,
-  filterProps: PropTypes.object
-};
+// MultiSelectDropdown.propTypes = {
+//   shouldUseApiSort: PropTypes.bool,
+//   handleChangeSort: PropTypes.func,
+//   enableOfflineSort: PropTypes.bool,
+//   sort: PropTypes.array,
+//   currentAccessor: PropTypes.string,
+//   column: PropTypes.object,
+//   listType: PropTypes.number,
+//   filterProps: PropTypes.object
+// };

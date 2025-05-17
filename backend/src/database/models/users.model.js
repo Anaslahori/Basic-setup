@@ -75,7 +75,12 @@ module.exports = function (sequelize, DataTypes) {
         },
         {
             freezeTableName: true,
-            paranoid: true
+            paranoid: true,
+               associate: (models) => {
+                users.belongsTo(models.users, { foreignKey: "created_by", as: "created" });
+                users.belongsTo(models.users, { foreignKey: "updated_by", as: "updated" });       
+            }
+            
         }
     );
     return users;

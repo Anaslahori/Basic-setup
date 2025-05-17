@@ -34,7 +34,6 @@ import { PlusOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 import IconButton from 'components/@extended/IconButton';
 import {
-  UnifiedHeaderSort,
   APIExport,
   CSVExport,
   EmptyTable,
@@ -46,13 +45,13 @@ import {
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { GlobalFilter, DefaultColumnFilter, renderFilterTypes } from 'utils/react-table';
-import { formatTimeStamp, formatOperator, getVisibleColumns, formatDate } from 'utils';
+import { formatTimeStamp, formatOperator, getVisibleColumns, formatDate } from 'utils/utils';
 
-import tableExportData from 'utils/tablesExportData';
-import { useFilterContext } from 'contexts/FilterContext';
-import usePrevious from 'hooks/usePrevious';
+// import tableExportData from 'utils/tablesExportData';
+// import { useFilterContext } from 'contexts/FilterContext';
+// import usePrevious from 'hooks/usePrevious';
 import toast from 'utils/ToastNotistack';
-import useAuth from 'hooks/useAuth';
+// import useAuth from 'hooks/useAuth';
 
 // ==============================|| REACT TABLE ||============================== //
 const PDFExport = ({ onClick, disabled }) => {
@@ -71,31 +70,7 @@ PDFExport.propTypes = {
   disabled: PropTypes.bool
 };
 
-const ResetFilterButton = ({ clearAllFilters, setSort, defaultSort }) => {
-  return (
-    <Tooltip title="Reset Sort and Filter" placement="bottom">
-      <IconButton
-        color="secondary"
-        onClick={() => {
-          if (typeof clearAllFilters === 'function') {
-            clearAllFilters();
-          }
-          if (typeof setSort === 'function') {
-            setSort(defaultSort || null);
-          }
-        }}
-      >
-        <FilterAltOffOutlinedIcon />
-      </IconButton>
-    </Tooltip>
-  );
-};
 
-ResetFilterButton.propTypes = {
-  clearAllFilters: PropTypes.func,
-  setSort: PropTypes.func,
-  defaultSort: PropTypes.array
-};
 
 export const TableSkeleton = ({ columns, hideActions }) => {
   return (
@@ -250,7 +225,7 @@ function ReactTable({
   const navigate = useNavigate();
   const [exportIconDisable, setExportIconDisable] = useState(false);
 
-  const { isCurrentlyFiltering, clearAllFilters } = useFilterContext();
+  // const { isCurrentlyFiltering, clearAllFilters } = useFilterContext();
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ disableFilters: true, Filter: DefaultColumnFilter }), []);
@@ -282,7 +257,7 @@ function ReactTable({
   const shouldExportUsingApi = useMemo(() => !!exportConfig?.tableName, [exportConfig]);
   const isCurrentlySorting = !!sort?.[2];
   const isApiSearch = typeof setSearchString === 'function';
-  const prevCleanupTrigger = usePrevious(cleanupTrigger);
+  // const prevCleanupTrigger = usePrevious(cleanupTrigger);
   const canBulkApprove = useMemo(() => {
     return columns.some((column) => column.column === 'l_b_approval_status');
   }, [columns]);
@@ -364,28 +339,21 @@ function ReactTable({
   }, [columns, hiddenColumns, setAccessors]);
 
   const runCleanup = useCallback(() => {
-    if (typeof clearAllFilters === 'function') {
-      clearAllFilters();
-    }
     if (typeof setSort === 'function') {
       setSort(defaultSort || null);
     }
     if (typeof setSearchString === 'function') {
       setSearchString(undefined);
     }
-  }, [clearAllFilters, defaultSort, setSearchString, setSort]);
+  }, [defaultSort, setSearchString, setSort]);
 
   useEffect(() => {
     if (!cleanupTrigger) {
       return;
     }
+  }, [runCleanup, cleanupTrigger]);
 
-    if (prevCleanupTrigger !== cleanupTrigger) {
-      runCleanup();
-    }
-  }, [runCleanup, cleanupTrigger, prevCleanupTrigger]);
-
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   return (
     <>
@@ -444,21 +412,7 @@ function ReactTable({
               >
                 {/* L2 Bulk Approval */}
 
-                {(!user?.role || user?.role?.id === 'a89c1591-ed87-40e5-b89b-e409d647e3e5' || user?.role?.bulkApproval) &&
-                  canBulkApprove &&
-                  showBulkApprove && (
-                    <Grid item sx={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
-                      <Button
-                        disabled={loading || listType == 0 || listType == 3}
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={onBulkApprove}
-                      >
-                        Bulk Approve
-                      </Button>
-                    </Grid>
-                  )}
+               
 
                 {!hideType && setListType && (
                   <Select
@@ -519,85 +473,7 @@ function ReactTable({
                 )}
 
                 {/* update feature only in form responses */}
-                {isFcMode &&
-                  importConfig &&
-                  (!user?.role || user?.role?.id === 'a89c1591-ed87-40e5-b89b-e409d647e3e5' || user?.role?.isUpdate) &&
-                  !hideUpdateButton && <APIUpdate importConfig={importConfig} formAttributesArray={formAttributesArray} />}
-                {/* import feature*/}
-                {(!user?.role || user?.role?.id === 'a89c1591-ed87-40e5-b89b-e409d647e3e5' || user?.role?.isImport) &&
-                  !hideImportButton && (
-                    <>
-                      {importConfig ? (
-                        <>
-                          {importQA ? (
-                            <APIImport
-                              importConfig={importConfig}
-                              tableName={'QA-Master-Maker-LOV'}
-                              importCompeted={importCompeted}
-                              forQA={true}
-                            />
-                          ) : importDep ? (
-                            <APIImport
-                              importConfig={importConfig}
-                              tableName={'Daily-Execution-Plan'}
-                              importCompeted={importCompeted}
-                              forDep={true}
-                            />
-                          ) : (
-                            <APIImport importConfig={importConfig} isMasterForm={isMasterForm} isResponse={isFcMode} />
-                          )}
-                        </>
-                      ) : exportConfig?.tableName ? (
-                        <APIImport tableName={exportConfig.tableName} />
-                      ) : null}
-                    </>
-                  )}
                 {/* export feature*/}
-                {(!user?.role || user?.role?.id === 'a89c1591-ed87-40e5-b89b-e409d647e3e5' || user?.role?.isExport) &&
-                  !hideExportButton && (
-                    <>
-                      {shouldExportUsingApi ? (
-                        <APIExport
-                          disabled={exportIconDisable || !rows?.length}
-                          stopDownload={stopDownload}
-                          setStopDownload={setStopDownload}
-                          disableExport={disableExport}
-                          searchStringTrimmed={searchStringTrimmed}
-                          sort={sort}
-                          isFcMode={isFcMode}
-                          columns={source === '/form-responses' ? oldColumns : columns}
-                          hiddenColumns={hiddenColumns}
-                          exportConfig={exportConfig}
-                          defaultSort={defaultSort}
-                          fileNameForExport={fileNameForExport}
-                          setExportIconDisable={setExportIconDisable}
-                        />
-                      ) : (
-                        <>
-                          {exportPDFOnly ? (
-                            <PDFExport disabled={!rows?.length} onClick={exportToPdf} />
-                          ) : (
-                            <CSVExport
-                              disabled={!rows?.length}
-                              data={
-                                source === '/form-responses'
-                                  ? tableExportData.getData(
-                                      rows.map((d) => d.original),
-                                      oldColumns
-                                    )
-                                  : tableExportData.getData(
-                                      allData && allData.length > 0 ? allData : rows.map((d) => d.original),
-                                      columns,
-                                      devolutionExport
-                                    )
-                              }
-                              fileNameForExport={fileNameForExport}
-                            />
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
                 {!hideAddButton && (
                   <Tooltip title="Add">
                     <PlusOutlined
@@ -638,9 +514,6 @@ function ReactTable({
                       }}
                     >
                       {miniAction ? '' : 'Actions'}
-                      {!isHistory && (isCurrentlyFiltering || isCurrentlySorting) && (
-                        <ResetFilterButton clearAllFilters={clearAllFilters} setSort={setSort} defaultSort={defaultSort} />
-                      )}
                     </TableCell>
                   )}
                   {headerGroups?.[0]?.headers.map((column, index) => (
@@ -669,20 +542,6 @@ function ReactTable({
                         </TableRow>
                       ) : null}
                       <Stack direction="row" spacing={1} alignItems="center">
-                        <UnifiedHeaderSort
-                          column={column}
-                          columns={columns}
-                          isFcMode={isFcMode}
-                          defaultSort={defaultSort}
-                          listType={listType}
-                          isHistory={isHistory}
-                          sort={sort}
-                          setSort={setSort}
-                          enableOfflineSort={enableOfflineSort}
-                        />
-                        {!isHistory && hideActions && index === 0 && (isCurrentlyFiltering || isCurrentlySorting) && (
-                          <ResetFilterButton clearAllFilters={clearAllFilters} setSort={setSort} defaultSort={defaultSort} />
-                        )}
                       </Stack>
                     </TableCell>
                   ))}
@@ -723,13 +582,7 @@ function ReactTable({
                                       <IconButton
                                         color="secondary"
                                         onClick={() => handleRowView(row?.original, index)}
-                                        disabled={
-                                          (componentFrom === 'gaa-level-entry' || componentFrom === 'network-level-entry') &&
-                                          row?.values?.approvalStatus
-                                            ? user?.roleId !== 'a89c1591-ed87-40e5-b89b-e409d647e3e5' &&
-                                              row.values.approvalStatus === 'Approved'
-                                            : false
-                                        }
+                                       
                                       >
                                         <VisibilityOutlinedIcon />
                                       </IconButton>
@@ -740,20 +593,10 @@ function ReactTable({
                                     <IconButton
                                       color="secondary"
                                       onClick={() =>
-                                        LoggedInUserhierarchyType && LoggedInUserhierarchyType === 'network'
-                                          ? row?.original?.hierarchyType === LoggedInUserhierarchyType
-                                            ? handleRowUpdate(row?.original)
-                                            : toast(`You can't give access to Upper Level hierarchy as you don't have access to it.`, {
-                                                variant: 'error'
-                                              })
-                                          : handleRowUpdate(row?.original)
-                                      }
-                                      disabled={
-                                        (componentFrom === 'gaa-level-entry' || componentFrom === 'network-level-entry') &&
-                                        row?.values?.approvalStatus
-                                          ? user?.roleId !== 'a89c1591-ed87-40e5-b89b-e409d647e3e5' &&
-                                            row.values.approvalStatus === 'Approved'
-                                          : false
+                                        
+                                             handleRowUpdate(row?.original)
+                                         
+                                         
                                       }
                                     >
                                       <EditOutlinedIcon />
