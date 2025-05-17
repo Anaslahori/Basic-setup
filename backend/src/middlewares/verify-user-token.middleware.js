@@ -33,7 +33,7 @@ module.exports = async (...args) => {
 
         // Decode the token and check for valid data
         const tokenData = TokenService.verifyToken(token);
-        if (!tokenData?.id) {
+        if (!tokenData?.userId) {
             return sendUnauthorizedResponse(_res, statusCodes.UNAUTHORIZED, statusMessage.SESSION_EXPIRED);
         }
 
