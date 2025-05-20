@@ -4,21 +4,21 @@ const createDbConnection = require("./services/sequelize");
 const dbConnections = {};
 
 class DB extends EventEmitter {
-    constructor() {
-        super();
-        this.db = dbConnections.db || {};
-    }
+  constructor() {
+    super();
+    this.db = dbConnections.db || {};
+  }
 
-    static createDatabaseConnection = async () => {
-        if (!Object.keys(dbConnections).length) {
-            dbConnections.db = await createDbConnection();
-            console.log("*** PostgresSQL connection successfully created ***");
-        }
-    };
-
-    getDataBaseConnections() {
-        return this.db;
+  static createDatabaseConnection = async () => {
+    if (!Object.keys(dbConnections).length) {
+      dbConnections.db = await createDbConnection();
+      console.log("*** PostgresSQL connection successfully created ***");
     }
+  };
+
+  getDataBaseConnections() {
+    return this.db;
+  }
 }
 
 module.exports = DB;

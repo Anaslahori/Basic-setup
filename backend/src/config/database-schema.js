@@ -1,5 +1,4 @@
 const schema = {
-    USERS: "users"
+  USERS: "users",
 };
 module.exports = Object.freeze(schema);
-

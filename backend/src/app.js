@@ -10,13 +10,15 @@ const { loadRoutesAndMiddleware } = require("./utilities/server-utill");
 
 const app = express();
 app.use(middleware);
-app.use(cors({
+app.use(
+  cors({
     origin: process.env.APP_HOST || "*",
     methods: "GET,PUT,POST,DELETE",
     preflightContinue: false,
     optionsSuccessStatus: 204,
-    exposedHeaders: ["Content-Disposition", "FileLength"]
-}));
+    exposedHeaders: ["Content-Disposition", "FileLength"],
+  })
+);
 app.use(require("./middlewares/response-handler.middleware"));
 
 app.use(fileUpload());
