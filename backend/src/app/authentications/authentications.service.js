@@ -29,7 +29,7 @@ const createUser = async (userDetails) => {
     });
     return user;
   } catch (error) {
-    throwError(statusCodes.INTERNAL_ERROR, statusMessages.CREATE_USER_FAILURE);
+    throwError(statusCodes.INTERNAL_ERROR, statusMessages.OPERATION_FAILURE);
   }
 };
 

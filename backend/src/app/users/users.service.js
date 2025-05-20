@@ -7,12 +7,11 @@ const userAlreadyExists = async (where) => {
   try {
     const users = new Users();
     const data = await users.isAlreadyExists(where);
-    console.log("data :", data);
     return data;
   } catch (error) {
     throwError(
       statusCodes.INTERNAL_ERROR,
-      statusMessages.FETCH_USER_FAILURE,
+      statusMessages.OPERATION_FAILURE,
       error
     );
   }
@@ -26,7 +25,7 @@ const getUserByCondition = async (where) => {
   } catch (error) {
     throwError(
       statusCodes.INTERNAL_ERROR,
-      statusMessages.FETCH_USER_FAILURE,
+      statusMessages.OPERATION_FAILURE,
       error
     );
   }
@@ -43,7 +42,7 @@ const createUser = async (userDetails) => {
   } catch (error) {
     throwError(
       statusCodes.INTERNAL_ERROR,
-      statusMessages.CREATE_USER_FAILURE,
+      statusMessages.OPERATION_FAILURE,
       error
     );
   }
@@ -63,7 +62,7 @@ const updateUser = async (userDetails, where) => {
   } catch (error) {
     throwError(
       statusCodes.INTERNAL_ERROR,
-      statusMessages.USER_UPDATE_FAILURE,
+      statusMessages.OPERATION_FAILURE,
       error
     );
   }
@@ -90,7 +89,7 @@ const getAllUsers = async (
   } catch (error) {
     throwError(
       statusCodes.INTERNAL_ERROR,
-      statusMessages.FETCH_USER_FAILURE,
+      statusMessages.OPERATION_FAILURE,
       error
     );
   }
@@ -104,7 +103,7 @@ const deleteUser = async (where) => {
   } catch (error) {
     throwError(
       statusCodes.INTERNAL_ERROR,
-      statusMessages.DELETE_CITY_FAILURE,
+      statusMessages.OPERATION_FAILURE,
       error
     );
   }

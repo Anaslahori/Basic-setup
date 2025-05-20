@@ -13,7 +13,7 @@ const signUp = async (req) => {
   throwIfNot(
     req.body,
     statusCodes.BAD_REQUEST,
-    statusMessages.MISSING_USER_DETAILS
+    statusMessages.MISSING_DETAILS
   );
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const mobileRegex = /^[0-9]{10}$/;

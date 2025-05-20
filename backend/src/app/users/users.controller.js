@@ -12,7 +12,7 @@ const createUser = async (req) => {
   throwIfNot(
     req.body,
     statusCodes.BAD_REQUEST,
-    statusMessages.MISSING_CITY_DETAILS
+    statusMessages.MISSING_DETAILS
   );
   const data = await userService.createUser(req.body);
   return { data };
@@ -27,12 +27,12 @@ const updateUser = async (req) => {
   throwIfNot(
     req.params.id,
     statusCodes.BAD_REQUEST,
-    statusMessages.CITY_ID_REQUIRED
+    statusMessages.MISSING_DETAILS
   );
   throwIfNot(
     req.body,
     statusCodes.BAD_REQUEST,
-    statusMessages.MISSING_CITY_DETAILS
+    statusMessages.MISSING_DETAILS
   );
   const data = await userService.updateUser(req.body, { id: req.params.id });
   return { data };
@@ -47,7 +47,7 @@ const getUserDetails = async (req) => {
   throwIfNot(
     req.params.id,
     statusCodes.BAD_REQUEST,
-    statusMessages.CITY_ID_REQUIRED
+    statusMessages.MISSING_DETAILS
   );
   const data = await userService.getUserByCondition({ id: req.params.id });
   return { data };
@@ -72,7 +72,7 @@ const deleteUser = async (req) => {
   throwIfNot(
     req.params.id,
     statusCodes.BAD_REQUEST,
-    statusMessages.CITY_ID_REQUIRED
+    statusMessages.MISSING_DETAILS
   );
   const data = await userService.deleteUser({ id: req.params.id });
   return { data };
